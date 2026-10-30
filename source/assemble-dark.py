@@ -1,9 +1,8 @@
 import base64,html,sys
 sys.path.insert(0,'.')
-sys.path.insert(0,'.')
 from cabinet import CLOSED,INNER,REFLECT
 def uri(p,m): return f'data:{m};base64,'+base64.b64encode(open(p,'rb').read()).decode()
-ARROW_UNUSED='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>'
+ARROW='<svg viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 5h20M16 1l5 4-5 4"/></svg>'
 objs=["Аэропорт Шереметьево","Стадион «Торпедо»","ТРЦ «Смоленский Пассаж»","АО «ВПК „НПО Машиностроения“»","Завод «СПГ Портовая»","Ермаковский ГОК","ЖК ЗИЛАРТ SPARK","ЖК Sky Garden","ЖК Ильинка 3/8","БЦ Dubinin’Sky","Депо «Южное»","Кинокластер «Кино №1»","Новосибирский металлургический завод","Больница ЦМСЧ № 141","Гольф-курорт «Шишкино»","Парк-отель «Бухта Коприно»","ЖК Одинбург","Супермаркет «Мираторг»","Московский эндокринный завод","Очистные сооружения, Геленджик"]
 one=''.join(f'<span>{html.escape(o)}</span>' for o in objs)
 two=''.join(f'<span aria-hidden="true">{html.escape(o)}</span>' for o in objs)
@@ -35,11 +34,11 @@ for gx in range(0,840,52):
 for d,w in streets:
   m+=f'<path d="{d}" stroke="#22346a" stroke-width="{w}" fill="none" stroke-linecap="round"/>'
 m+='<path d="M560,-20 C540,200 600,380 560,620" stroke="#f26a1b" stroke-opacity=".55" stroke-width="5" fill="none"/>'
-m+='<text x="590" y="250" font-family="Manrope,sans-serif" font-size="13" font-weight="600" fill="#8f9cbc" transform="rotate(84 590 250)">ул. Советская</text>'
+m+='<text x="590" y="250" font-family="Jost,Manrope,sans-serif" font-size="14" font-weight="300" fill="#8f9cbc" transform="rotate(84 590 250)">ул. Советская</text>'
 m+='<g transform="translate(548,214)"><circle r="46" fill="#f26a1b" opacity=".16"/><circle r="26" fill="#f26a1b" opacity=".22"/><path d="M0,0 C-16,-22 -20,-32 -20,-40 a20,20 0 1 1 40,0 c0,8 -4,18 -20,40z" fill="#f26a1b" stroke="#fff" stroke-width="3"/><circle cy="-40" r="7" fill="#fff"/></g>'
 m+='</svg>'
 t=open('template-dark.html').read()
-for k,v in {'{{SCENE}}':uri('../assets/scene.webp','image/webp'),'{{LOGO}}':uri('../assets/logo-light.webp','image/webp'),'{{CLOSED}}':CLOSED,'{{INNER}}':INNER,'{{REFLECT}}':REFLECT,'{{OBJECTS}}':one+two,'{{SPEC}}':SPEC,'{{TOTAL}}':str(TOTAL),'{{MAP}}':m}.items():
+for k,v in {'{{SCENE}}':uri('../assets/scene.webp','image/webp'),'{{LOGO}}':uri('../assets/logo-light.webp','image/webp'),'{{CLOSED}}':CLOSED,'{{INNER}}':INNER,'{{REFLECT}}':REFLECT,'{{OBJECTS}}':one+two,'{{SPEC}}':SPEC,'{{TOTAL}}':str(TOTAL),'{{MAP}}':m,'{{ARROW}}':ARROW}.items():
   t=t.replace(k,v)
 assert '{{' not in t
 open('../amperazh-dark.html','w').write(t)
