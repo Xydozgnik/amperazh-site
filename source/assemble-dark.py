@@ -1,6 +1,5 @@
 import base64,html,sys
 sys.path.insert(0,'.')
-from cabinet import CLOSED,INNER,REFLECT
 def uri(p,m): return f'data:{m};base64,'+base64.b64encode(open(p,'rb').read()).decode()
 ARROW='<svg viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 5h20M16 1l5 4-5 4"/></svg>'
 objs=["Аэропорт Шереметьево","Стадион «Торпедо»","ТРЦ «Смоленский Пассаж»","АО «ВПК „НПО Машиностроения“»","Завод «СПГ Портовая»","Ермаковский ГОК","ЖК ЗИЛАРТ SPARK","ЖК Sky Garden","ЖК Ильинка 3/8","БЦ Dubinin’Sky","Депо «Южное»","Кинокластер «Кино №1»","Новосибирский металлургический завод","Больница ЦМСЧ № 141","Гольф-курорт «Шишкино»","Парк-отель «Бухта Коприно»","ЖК Одинбург","Супермаркет «Мираторг»","Московский эндокринный завод","Очистные сооружения, Геленджик"]
@@ -38,7 +37,7 @@ m+='<text x="590" y="250" font-family="Jost,Manrope,sans-serif" font-size="14" f
 m+='<g transform="translate(548,214)"><circle r="46" fill="#f26a1b" opacity=".16"/><circle r="26" fill="#f26a1b" opacity=".22"/><path d="M0,0 C-16,-22 -20,-32 -20,-40 a20,20 0 1 1 40,0 c0,8 -4,18 -20,40z" fill="#f26a1b" stroke="#fff" stroke-width="3"/><circle cy="-40" r="7" fill="#fff"/></g>'
 m+='</svg>'
 t=open('template-dark.html').read()
-for k,v in {'{{SCENE}}':uri('../assets/scene.webp','image/webp'),'{{LOGO}}':uri('../assets/logo-light.webp','image/webp'),'{{CLOSED}}':CLOSED,'{{INNER}}':INNER,'{{REFLECT}}':REFLECT,'{{OBJECTS}}':one+two,'{{SPEC}}':SPEC,'{{TOTAL}}':str(TOTAL),'{{MAP}}':m,'{{ARROW}}':ARROW}.items():
+for k,v in {'{{SCENE}}':uri('../assets/scene.webp','image/webp'),'{{LOGO}}':uri('../assets/logo-light.webp','image/webp'),'{{CAB_CLOSED}}':uri('../assets/cabinet-closed.webp','image/webp'),'{{CAB_OPEN}}':uri('../assets/cabinet-open.webp','image/webp'),'{{OBJECTS}}':one+two,'{{SPEC}}':SPEC,'{{TOTAL}}':str(TOTAL),'{{MAP}}':m,'{{ARROW}}':ARROW}.items():
   t=t.replace(k,v)
 assert '{{' not in t
 open('../amperazh-dark.html','w').write(t)

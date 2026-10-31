@@ -76,18 +76,18 @@ h1,h2,h3{font-family:var(--fd);font-weight:200;margin:0;text-wrap:balance;letter
 .frame::before{content:"";position:absolute;top:0;bottom:60px;left:clamp(16px,13vw,200px);border-left:1px solid var(--line)}
 .frame::after{content:"";position:absolute;top:0;bottom:60px;right:clamp(16px,4vw,60px);border-left:1px solid var(--line)}
 
-.monument{position:absolute;left:0;right:0;margin-inline:auto;bottom:46%;width:min(28vw,42svh,440px);z-index:1}
-.monument .glow{position:absolute;left:50%;bottom:-6%;width:160%;height:30%;transform:translateX(-50%);background:radial-gradient(ellipse at center,rgba(255,138,61,.42),rgba(255,138,61,0) 70%);filter:blur(16px);pointer-events:none}
-.xray{position:relative;width:100%;aspect-ratio:620/560;cursor:none;touch-action:pan-y}
-.cab{position:absolute;inset:0;width:100%;height:100%;display:block}
-.cab-closed{filter:brightness(.78) saturate(.9) drop-shadow(0 0 28px rgba(120,150,220,.2))}
+.monument{position:absolute;left:0;right:0;margin-inline:auto;bottom:46%;width:min(38vw,50svh,620px);z-index:1}
+.monument .glow{position:absolute;left:50%;bottom:-6%;width:130%;height:30%;transform:translateX(-50%);background:radial-gradient(ellipse at center,rgba(255,138,61,.38),rgba(255,138,61,0) 70%);filter:blur(16px);pointer-events:none}
+.xray{position:relative;width:100%;aspect-ratio:1400/989;cursor:none;touch-action:pan-y}
+.cab{position:absolute;inset:0;width:100%;height:100%;display:block;-webkit-user-drag:none;user-select:none}
+.cab-closed{filter:brightness(.66) saturate(.8) contrast(1.05) drop-shadow(0 0 30px rgba(120,150,220,.18))}
 .cab-inner{--x:50%;--y:50%;--r:0px;
   -webkit-mask-image:radial-gradient(circle var(--r) at var(--x) var(--y),#000 0%,#000 35%,rgba(0,0,0,.55) 62%,transparent 100%);
           mask-image:radial-gradient(circle var(--r) at var(--x) var(--y),#000 0%,#000 35%,rgba(0,0,0,.55) 62%,transparent 100%)}
 .lamp{position:absolute;left:0;top:0;width:var(--d,0px);height:var(--d,0px);margin:calc(var(--d,0px) / -2) 0 0 calc(var(--d,0px) / -2);border-radius:50%;pointer-events:none;
   background:radial-gradient(circle,rgba(255,138,61,.28),rgba(255,138,61,0) 65%);mix-blend-mode:screen;opacity:0;transition:opacity .3s}
 .xray.on .lamp{opacity:1}
-.cab-refl{position:absolute;left:0;top:100%;width:100%;height:auto;transform:scaleY(-1);opacity:.2;filter:blur(2px) brightness(.8);
+.cab-refl{position:absolute;left:0;top:100%;width:100%;height:auto;transform:scaleY(-1);opacity:.18;filter:blur(2px) brightness(.6);
   -webkit-mask-image:linear-gradient(0deg,#000 0%,transparent 55%);mask-image:linear-gradient(0deg,#000 0%,transparent 55%);pointer-events:none}
 .xhint{position:absolute;right:-10px;top:12%;transform:translateX(100%);color:var(--dim);white-space:nowrap;display:flex;align-items:center;gap:12px}
 .xhint::before{content:"";width:40px;border-top:1px solid var(--orange)}
@@ -225,7 +225,7 @@ section.block{padding-block:150px 0;position:relative}
   .card{min-height:320px}
   .sec-head,.ct-grid,.about{grid-template-columns:minmax(0,1fr);gap:40px}
   .sec-head{gap:16px}
-  .monument{width:min(62vw,38svh,380px)}
+  .monument{width:min(88vw,46svh,520px)}
   .xhint,.frame{display:none}
   section.block{padding-top:110px}
   .spec-row,.spec-total{grid-template-columns:minmax(0,1fr) 3rem}
@@ -288,11 +288,11 @@ section.block{padding-block:150px 0;position:relative}
   <div class="monument" data-p="monument">
     <div class="glow"></div>
     <div class="xray" id="xray" role="img" aria-label="Шкаф ГРЩ: наведите курсор, чтобы увидеть медные шины и аппараты внутри">
-      {{CLOSED}}
-      {{INNER}}
+      <img class="cab cab-closed" src="{{CAB_CLOSED}}" alt="" width="1400" height="989" draggable="false">
+      <img class="cab cab-inner" src="{{CAB_OPEN}}" alt="" width="1400" height="989" draggable="false">
       <div class="lamp" id="lamp"></div>
     </div>
-    {{REFLECT}}
+    <img class="cab-refl" src="{{CAB_CLOSED}}" alt="" width="1400" height="989" aria-hidden="true">
     <div class="xhint caps">Наведите на шкаф</div>
   </div>
 
@@ -452,7 +452,7 @@ section.block{padding-block:150px 0;position:relative}
   /* soft x-ray: feathered mask follows the cursor, radius eases in and out */
   var box=document.getElementById('xray'), inner=box.querySelector('.cab-inner'), lamp=document.getElementById('lamp');
   var tx=0,ty=0,x=0,y=0,r=0,tr=0,raf=null,demo=false;
-  function R(){return Math.max(64,box.clientWidth*0.25)}
+  function R(){return Math.max(70,box.clientWidth*0.2)}
   function loop(){
     x+=(tx-x)*0.22; y+=(ty-y)*0.22; r+=(tr-r)*0.12;
     inner.style.setProperty('--x',x+'px');inner.style.setProperty('--y',y+'px');inner.style.setProperty('--r',r+'px');
