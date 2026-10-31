@@ -69,14 +69,20 @@ h1,h2,h3{font-family:var(--fd);font-weight:200;margin:0;text-wrap:balance;letter
 .index a.on::before{width:32px;border-color:var(--orange)}
 
 /* hero */
-.hero{position:relative;height:max(680px,min(100svh,1020px));overflow:hidden;isolation:isolate}
-.scene{position:absolute;inset:0;background:var(--night) url("{{SCENE}}") center 56%/cover no-repeat;transform:scale(1.14);transform-origin:50% 56%;z-index:-3}
-.hero::after{content:"";position:absolute;inset:auto 0 0;height:30%;background:linear-gradient(transparent,var(--night));z-index:-2;pointer-events:none}
+.hero{--cw:min(32vw,42svh,560px);position:relative;height:max(680px,min(100svh,1020px));overflow:hidden;isolation:isolate;background:var(--night)}
+/* слоистый параллакс: небо, дальние горы, ближние горы, заголовок, вода со шкафом — каждый слой едет со своей скоростью */
+.layers{position:absolute;inset:0;z-index:0}
+.layer{position:absolute;inset:0;will-change:transform}
+.layer > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 56%;display:block;pointer-events:none;user-select:none}
+.hero-title{position:absolute;top:auto;left:0;right:0;bottom:calc(46% + var(--cw) * .7064 + 3vh);text-align:center;padding-inline:20px;pointer-events:none}
+.hero-title h1{font-size:clamp(38px,5vw,80px);font-weight:200;line-height:1.04;letter-spacing:-.025em;text-shadow:0 2px 30px rgba(6,11,27,.55)}
+.vignette{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 75% 70% at 50% 50%,transparent 45%,rgba(3,6,16,.55) 100%)}
+.hero-fade{position:absolute;inset:auto 0 0;height:30%;z-index:1;background:linear-gradient(transparent,var(--night));pointer-events:none}
 .frame{position:absolute;inset:0;pointer-events:none;z-index:-1}
 .frame::before{content:"";position:absolute;top:0;bottom:60px;left:clamp(16px,13vw,200px);border-left:1px solid var(--line)}
 .frame::after{content:"";position:absolute;top:0;bottom:60px;right:clamp(16px,4vw,60px);border-left:1px solid var(--line)}
 
-.monument{position:absolute;left:0;right:0;margin-inline:auto;bottom:46%;width:min(38vw,50svh,620px);z-index:1}
+.monument{position:absolute;left:0;right:0;margin-inline:auto;bottom:46%;width:var(--cw);z-index:1}
 .monument .glow{position:absolute;left:50%;bottom:-6%;width:130%;height:30%;transform:translateX(-50%);background:radial-gradient(ellipse at center,rgba(255,138,61,.38),rgba(255,138,61,0) 70%);filter:blur(16px);pointer-events:none}
 .xray{position:relative;width:100%;aspect-ratio:1400/989;cursor:none;touch-action:pan-y}
 .cab{position:absolute;inset:0;width:100%;height:100%;display:block;-webkit-user-drag:none;user-select:none}
@@ -92,8 +98,7 @@ h1,h2,h3{font-family:var(--fd);font-weight:200;margin:0;text-wrap:balance;letter
 .xhint{position:absolute;right:-10px;top:12%;transform:translateX(100%);color:var(--dim);white-space:nowrap;display:flex;align-items:center;gap:12px}
 .xhint::before{content:"";width:40px;border-top:1px solid var(--orange)}
 
-.hero-copy{position:absolute;left:0;right:0;margin-inline:auto;top:57%;width:min(820px,calc(100% - 40px));text-align:center;display:grid;justify-items:center;gap:22px;z-index:2}
-.hero-copy h1{font-size:clamp(40px,5.6vw,88px);font-weight:200;line-height:1.02;letter-spacing:-.025em;text-shadow:0 2px 30px rgba(6,11,27,.55)}
+.hero-copy{position:absolute;left:0;right:0;margin-inline:auto;top:61%;width:min(720px,calc(100% - 40px));text-align:center;display:grid;justify-items:center;gap:24px;z-index:2}
 .hero-copy p{margin:0;max-width:54ch;color:var(--soft);font-size:16px;text-shadow:0 1px 14px rgba(6,11,27,.85)}
 
 .bar{position:absolute;left:0;right:0;bottom:0;height:60px;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;z-index:2;
@@ -225,7 +230,7 @@ section.block{padding-block:150px 0;position:relative}
   .card{min-height:320px}
   .sec-head,.ct-grid,.about{grid-template-columns:minmax(0,1fr);gap:40px}
   .sec-head{gap:16px}
-  .monument{width:min(88vw,46svh,520px)}
+  .hero{--cw:min(88vw,46svh,520px)}
   .xhint,.frame{display:none}
   section.block{padding-top:110px}
   .spec-row,.spec-total{grid-template-columns:minmax(0,1fr) 3rem}
@@ -237,7 +242,7 @@ section.block{padding-block:150px 0;position:relative}
   .card{min-height:0;border-radius:0 64px 0 64px}
   .card .ico{margin-bottom:12px}
   .card .btn{margin-top:14px}
-  .hero-copy{top:56%;gap:16px}
+  .hero-copy{top:59%;gap:16px}
   .hero-copy p{font-size:15px}
   .bar{grid-template-columns:auto 1fr;gap:12px}
   .bar > :first-child{display:none}
@@ -282,10 +287,14 @@ section.block{padding-block:150px 0;position:relative}
 
 <main lang="ru">
 <section class="hero" id="hero">
-  <div class="scene" data-p="scene"></div>
-  <div class="frame"></div>
-
-  <div class="monument" data-p="monument">
+  <div class="layers" data-parallax-layers>
+    <div class="layer" data-parallax-layer="0.7"><img src="{{L_SKY}}" alt="" width="1920" height="1080"></div>
+    <div class="layer" data-parallax-layer="0.55"><img src="{{L_FAR}}" alt="" width="1920" height="1080"></div>
+    <div class="layer" data-parallax-layer="0.4"><img src="{{L_NEAR}}" alt="" width="1920" height="1080"></div>
+    <div class="layer hero-title" data-parallax-layer="0.32"><h1>Энергия под контролем</h1></div>
+    <div class="layer" data-parallax-layer="0.1">
+      <img src="{{L_WATER}}" alt="" width="1920" height="1080">
+  <div class="monument">
     <div class="glow"></div>
     <div class="xray" id="xray" role="img" aria-label="Шкаф ГРЩ: наведите курсор, чтобы увидеть медные шины и аппараты внутри">
       <img class="cab cab-closed" src="{{CAB_CLOSED}}" alt="" width="1400" height="989" draggable="false">
@@ -297,10 +306,14 @@ section.block{padding-block:150px 0;position:relative}
   </div>
 
   <div class="hero-copy" data-p="copy">
-    <h1>Энергия под контролем</h1>
     <p>Собираем ГРЩ, ВРУ, шкафы АВР и щиты для ЦОД на своём производстве в Королёве. По рабочей документации или с подбором аналогов, когда нужные аппараты долго ждать.</p>
     <a class="btn" href="#contacts">Рассчитать щит{{ARROW}}</a>
   </div>
+    </div>
+  </div>
+  <div class="vignette"></div>
+  <div class="hero-fade"></div>
+  <div class="frame"></div>
 
   <div class="bar caps">
     <span>Королёв · Пн–Пт 8:00–17:00</span>
@@ -495,11 +508,16 @@ section.block{padding-block:150px 0;position:relative}
       document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var id=a.getAttribute('href');var el=id.length>1&&document.querySelector(id);if(el){e.preventDefault();lenis.scrollTo(el,{offset:id==='#hero'?0:-80})}})});
     }
     var st={trigger:'#hero',start:'top top',end:'bottom top',scrub:true};
-    gsap.to('[data-p="scene"]',{yPercent:9,ease:'none',scrollTrigger:st});
-    gsap.to('[data-p="monument"]',{y:110,ease:'none',scrollTrigger:st});
-    gsap.to('[data-p="copy"]',{y:-120,opacity:.2,ease:'none',scrollTrigger:st});
+    /* каждый слой за время прокрутки первого экрана сдвигается вниз на свою долю высоты экрана:
+       дальние слои — сильнее, ближние — слабее, отсюда ощущение глубины */
+    var tl=gsap.timeline({scrollTrigger:{trigger:'[data-parallax-layers]',start:'0% 0%',end:'100% 0%',scrub:0,invalidateOnRefresh:true}});
+    document.querySelectorAll('[data-parallax-layer]').forEach(function(el,i){
+      var k=parseFloat(el.getAttribute('data-parallax-layer'));
+      tl.to(el,{y:function(){return hero.offsetHeight*k},ease:'none'},i?'<':undefined);
+    });
+    tl.to('[data-p="copy"]',{opacity:0,ease:'none'},'<');
     /* мягкое появление заголовка */
-    gsap.from('.hero-copy > *',{y:24,opacity:0,duration:1.4,ease:'power3.out',stagger:.12,delay:.2});
+    gsap.from(['.hero-title h1','.hero-copy > *'],{y:24,opacity:0,duration:1.4,ease:'power3.out',stagger:.12,delay:.2});
   }
 })();
 </script>
