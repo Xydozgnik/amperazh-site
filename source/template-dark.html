@@ -255,24 +255,26 @@ section.block{padding-block:150px 0;position:relative}
 .spec-total{font-family:var(--fd);font-weight:300;font-size:20px;border-bottom:0}
 
 /* contacts */
-.ct-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:64px;align-items:stretch}
-.ct-grid .sec-head{grid-template-columns:1fr;margin-bottom:36px}
+.ct-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:56px;align-items:stretch}
+.ct-grid .sec-head{grid-template-columns:1fr;gap:12px;margin-bottom:22px}
+.ct-grid .sec-head h2{font-size:clamp(32px,3.2vw,46px)}
+.ct-grid .sec-head p{font-size:15px}
 .rows{display:grid;margin:0}
-.row{display:grid;gap:6px;padding-block:20px;border-top:1px solid var(--line)}
-.row dt{color:var(--dim);font-size:14px}
-.row dd{margin:0;font-family:var(--fd);font-size:clamp(22px,2vw,28px);font-weight:200;display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;min-width:0;line-height:1.3}
+.row{display:grid;gap:4px;padding-block:13px;border-top:1px solid var(--line)}
+.row dt{color:var(--dim);font-size:13px}
+.row dd{margin:0;font-family:var(--fd);font-size:clamp(20px,1.7vw,24px);font-weight:200;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;min-width:0;line-height:1.3}
 .row dd a{text-decoration:none;transition:color .2s}
 .row dd a:hover{color:var(--orange)}
 .row dd span{overflow-wrap:anywhere}
-.copy-btn{font:300 11px var(--fd);letter-spacing:.16em;text-transform:uppercase;color:var(--soft);background:transparent;border:1px solid var(--orange);border-radius:999px;padding:8px 14px;cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.copy-btn{font:300 11px var(--fd);letter-spacing:.16em;text-transform:uppercase;color:var(--soft);background:transparent;border:1px solid var(--orange);border-radius:999px;padding:7px 13px;cursor:pointer;transition:background .2s,border-color .2s,color .2s}
 .copy-btn:hover{background:var(--orange);border-color:var(--orange);color:#fff}
 .row dd.msgs{gap:10px}
-.msgs a{font-size:13px;font-weight:300;letter-spacing:.18em;text-transform:uppercase;padding:11px 20px;border:1px solid var(--orange);border-radius:999px}
+.msgs a{font-size:12px;font-weight:300;letter-spacing:.18em;text-transform:uppercase;padding:9px 18px;border:1px solid var(--orange);border-radius:999px}
 .row dd.msgs a:hover{background:var(--orange);color:#fff}
-.mapcard{position:relative;border-radius:0 96px 0 96px;overflow:hidden;background:#0c1735;min-height:480px;border:1px solid var(--line)}
+.mapcard{position:relative;border-radius:0 96px 0 96px;overflow:hidden;background:#0c1735;min-height:360px;border:1px solid var(--line)}
 .mapcard > svg{position:absolute;inset:0;width:100%;height:100%}
-.map-label{position:absolute;left:24px;bottom:24px;display:grid;gap:16px;justify-items:start;max-width:calc(100% - 48px);padding:20px 22px;border-radius:20px;border:1px solid var(--line-2);background:rgba(6,11,27,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-.map-label b{font-family:var(--fd);font-size:19px;font-weight:300;line-height:1.35}
+.map-label{position:absolute;left:24px;bottom:24px;display:grid;gap:16px;justify-items:start;max-width:calc(100% - 48px);padding:16px 18px;border-radius:20px;border:1px solid var(--line-2);background:rgba(6,11,27,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.map-label b{font-family:var(--fd);font-size:17px;font-weight:300;line-height:1.35}
 
 .foot{margin-top:150px;border-top:1px solid var(--line)}
 .foot .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding-block:28px;color:var(--dim);font-size:14px}
@@ -329,7 +331,7 @@ section.block{padding-block:150px 0;position:relative}
   .spec{margin:0 16px 20px}
   .ref-head{padding:20px 16px 14px}
   .ref{border-radius:0 36px 0 36px}
-  .mapcard{min-height:380px;border-radius:0 64px 0 64px}
+  .mapcard{min-height:320px;border-radius:0 64px 0 64px}
   .float .btn{padding:12px 16px}
 }
 @media (prefers-reduced-motion:reduce){
@@ -548,6 +550,22 @@ section.block{padding-block:150px 0;position:relative}
   }
   window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
 
+  /* переход по пунктам меню: контент раздела встаёт сразу под шапкой, без недолёта */
+  var smooth=null;
+  function headerH(){var img=top.querySelector('.brand img'),was=top.classList.contains('solid');img.style.transition='none';if(!was)top.classList.add('solid');var h=top.offsetHeight;if(!was)top.classList.remove('solid');void img.offsetHeight;img.style.transition='';return h}
+  function targetY(el){
+    if(el.id==='hero')return 0;
+    var box=el.querySelector('.wrap')||el;
+    var y=box.getBoundingClientRect().top+window.scrollY-headerH()-28;
+    return Math.max(0,Math.min(y,document.documentElement.scrollHeight-window.innerHeight));
+  }
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){
+    var id=a.getAttribute('href');var el=id.length>1&&document.getElementById(id.slice(1));if(!el)return;
+    e.preventDefault();var y=targetY(el);
+    if(smooth)smooth.scrollTo(y);else window.scrollTo({top:y,behavior:reduce?'auto':'smooth'});
+    if(history.replaceState)history.replaceState(null,'',id);
+  })});
+
   /* reveal on scroll */
   if(!reduce&&'IntersectionObserver' in window){
     document.documentElement.classList.add('js');
@@ -651,11 +669,10 @@ section.block{padding-block:150px 0;position:relative}
   if(window.gsap&&window.ScrollTrigger&&!reduce){
     gsap.registerPlugin(ScrollTrigger);
     if(window.Lenis){
-      var lenis=new Lenis({duration:1.15,smoothWheel:true});
+      var lenis=new Lenis({duration:1.15,smoothWheel:true});smooth=lenis;
       lenis.on('scroll',ScrollTrigger.update);
       gsap.ticker.add(function(t){lenis.raf(t*1000)});
       gsap.ticker.lagSmoothing(0);
-      document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var id=a.getAttribute('href');var el=id.length>1&&document.querySelector(id);if(el){e.preventDefault();lenis.scrollTo(el,{offset:id==='#hero'?0:-80})}})});
     }
     var st={trigger:'#hero',start:'top top',end:'bottom top',scrub:true};
     /* каждый слой за время прокрутки первого экрана сдвигается вниз на свою долю высоты экрана:
