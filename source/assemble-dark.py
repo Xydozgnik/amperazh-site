@@ -42,4 +42,5 @@ for k,v in {'{{L_CITY}}':uri('../assets/bg-city.webp','image/webp'),'{{LOGO}}':u
   t=t.replace(k,v)
 assert '{{' not in t
 open('../amperazh-dark.html','w').write(t)
+open('../index.html','w').write(t)  # главная страница для GitHub Pages и хостинга
 print(len(t))
