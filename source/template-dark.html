@@ -62,16 +62,6 @@ h1,h2,h3{font-family:var(--fd);font-weight:200;margin:0;text-wrap:balance;letter
 .burger{display:none;margin-left:auto;width:44px;height:44px;border:1px solid var(--line-2);border-radius:999px;background:rgba(14,24,54,.4);color:var(--text);cursor:pointer}
 .burger span{display:block;width:18px;height:1px;background:currentColor;margin:5px auto}
 
-/* left section index */
-.index{position:fixed;left:max(28px,env(safe-area-inset-left,0px));top:50%;transform:translateY(-50%);z-index:40;display:grid;gap:14px;margin:0;padding:0;list-style:none}
-.index a{position:relative;display:flex;align-items:center;gap:12px;height:14px;text-decoration:none;color:rgba(214,226,255,.36);font-family:var(--fd);font-size:11px;font-weight:300;letter-spacing:.2em;text-transform:uppercase;transition:color .3s}
-.index a span{position:absolute;left:46px;white-space:nowrap;padding:6px 12px;border-radius:999px;background:rgba(6,11,27,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;translate:-6px 0;pointer-events:none;transition:opacity .25s,translate .25s}
-.index a:hover span,.index a:focus-visible span{opacity:1;translate:0 0}
-.index a::before{content:"";width:14px;border-top:1px solid currentColor;transition:width .3s var(--ease),border-color .3s}
-.index a:hover{color:var(--orange)}
-.index a.on{color:var(--text)}
-.index a.on::before{width:32px;border-color:var(--orange)}
-
 /* hero */
 .hero{--cw:min(32vw,42svh,560px);position:relative;height:clamp(560px,100vh,1020px);height:clamp(560px,100svh,1020px);overflow:hidden;isolation:isolate;background:var(--night)}
 /* слоистый параллакс: небо, дальние горы, ближние горы, заголовок, вода со шкафом — каждый слой едет со своей скоростью */
@@ -295,7 +285,6 @@ section.block{padding-block:150px 0;position:relative}
 .js .rv{opacity:0;translate:0 28px;transition:opacity 1s var(--ease),translate 1s var(--ease);transition-delay:calc(var(--i,0) * 90ms)}
 .js .rv.in{opacity:1;translate:0 0}
 
-@media (max-width:1180px){ .index{display:none} }
 @media (max-width:1080px){
   .gf-grid{gap:24px 16px}
   .cards{gap:12px}
@@ -366,15 +355,6 @@ section.block{padding-block:150px 0;position:relative}
     <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
   </div>
 </header>
-
-<ul class="index" id="index" aria-label="Разделы страницы">
-  <li><a href="#hero" class="on"><span>Главная</span></a></li>
-  <li><a href="#about"><span>Производство</span></a></li>
-  <li><a href="#products"><span>Продукция</span></a></li>
-  <li><a href="#objects"><span>Объекты</span></a></li>
-  <li><a href="#gallery"><span>Галерея</span></a></li>
-  <li><a href="#contacts"><span>Контакты</span></a></li>
-</ul>
 
 <main lang="ru">
 <section class="hero" id="hero">
@@ -547,16 +527,12 @@ section.block{padding-block:150px 0;position:relative}
   burger.addEventListener('click',function(){var o=top.classList.toggle('open');burger.setAttribute('aria-expanded',o)});
   document.querySelectorAll('.nav a').forEach(function(a){a.addEventListener('click',function(){top.classList.remove('open');burger.setAttribute('aria-expanded','false')})});
 
-  /* header becomes solid, floating button appears after the hero, index tracks the section */
+  /* header becomes solid, floating button appears after the hero */
   var hero=document.getElementById('hero'), fl=document.getElementById('float');
-  var links=[].slice.call(document.querySelectorAll('#index a'));
-  var secs=links.map(function(a){return document.querySelector(a.getAttribute('href'))});
   function onScroll(){
     var y=window.scrollY||document.documentElement.scrollTop;
     top.classList.toggle('solid',y>40);
     fl.classList.toggle('hide',y<hero.offsetHeight*0.7);
-    var cur=0; secs.forEach(function(s,i){if(s&&s.getBoundingClientRect().top<window.innerHeight*0.45)cur=i});
-    links.forEach(function(a,i){a.classList.toggle('on',i===cur)});
   }
   window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
 
