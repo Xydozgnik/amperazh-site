@@ -76,8 +76,8 @@ h1,h2,h3{font-family:var(--fd);font-weight:200;margin:0;text-wrap:balance;letter
 .layer > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 59%;display:block;pointer-events:none;user-select:none}
 .hero-title{position:absolute;top:auto;left:0;right:0;bottom:calc(41.5% + var(--cw) * .7064 + 3vh);text-align:center;padding-inline:20px;pointer-events:none}
 .hero-title h1{font-size:clamp(38px,5vw,80px);font-weight:200;line-height:1.04;letter-spacing:-.025em;text-shadow:0 2px 30px rgba(6,11,27,.55)}
-.vignette{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 75% 70% at 50% 50%,transparent 45%,rgba(3,6,16,.55) 100%)}
-.hero-fade{position:absolute;inset:auto 0 0;height:30%;z-index:1;background:linear-gradient(transparent,var(--night));pointer-events:none}
+.vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 75% 70% at 50% 50%,transparent 45%,rgba(3,6,16,.55) 100%)}
+.hero-fade{position:absolute;inset:auto 0 0;height:30%;background:linear-gradient(transparent,var(--night));pointer-events:none}
 .frame{position:absolute;inset:0;pointer-events:none;z-index:-1}
 .frame::before{content:"";position:absolute;top:0;bottom:60px;left:clamp(16px,13vw,200px);border-left:1px solid var(--line)}
 .frame::after{content:"";position:absolute;top:0;bottom:60px;right:clamp(16px,4vw,60px);border-left:1px solid var(--line)}
@@ -99,7 +99,7 @@ h1,h2,h3{font-family:var(--fd);font-weight:200;margin:0;text-wrap:balance;letter
 .xhint::before{content:"";width:40px;border-top:1px solid var(--orange)}
 
 .hero-copy{position:absolute;left:0;right:0;margin-inline:auto;top:64%;width:min(720px,calc(100% - 40px));text-align:center;display:grid;justify-items:center;gap:24px;z-index:2}
-.hero-copy p{margin:0;max-width:54ch;color:var(--soft);font-size:16px;text-shadow:0 1px 14px rgba(6,11,27,.85)}
+.hero-copy p{margin:0;max-width:54ch;color:#f1f5fc;font-size:16.5px;font-weight:400;text-shadow:0 1px 3px rgba(4,8,20,.9),0 2px 18px rgba(4,8,20,.85)}
 
 .bar{position:absolute;left:0;right:0;bottom:0;height:60px;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;z-index:2;
   padding-left:max(28px,env(safe-area-inset-left,0px));padding-right:max(28px,env(safe-area-inset-right,0px));color:var(--dim)}
@@ -343,7 +343,7 @@ section.block{padding-block:150px 0;position:relative}
 
 <header class="top" id="top">
   <div class="top-in">
-    <a class="brand" href="#hero" aria-label="Ампераж Электро, на главную"><img src="{{LOGO}}" alt="Ампераж Электро — производство НКУ" width="462" height="200"></a>
+    <a class="brand" href="#hero" aria-label="Ампераж Электро, на главную"><img src="{{LOGO}}" alt="Ампераж Электро — производство НКУ" width="606" height="260"></a>
     <nav class="nav caps" id="nav" aria-label="Основное меню">
       <a href="#about">О нас</a>
       <a href="#products">Продукция</a>
@@ -368,6 +368,8 @@ section.block{padding-block:150px 0;position:relative}
 <section class="hero" id="hero">
   <div class="layers" data-parallax-layers>
     <div class="layer" data-parallax-layer="0.5"><img src="{{L_CITY}}" alt="" width="1920" height="1071"></div>
+    <div class="vignette"></div>
+    <div class="hero-fade"></div>
     <div class="layer hero-title" data-parallax-layer="0.32"><h1>Энергия под контролем</h1></div>
     <div class="layer" data-parallax-layer="0.1">
   <div class="monument">
@@ -383,12 +385,10 @@ section.block{padding-block:150px 0;position:relative}
 
   <div class="hero-copy" data-p="copy">
     <p>Собираем ГРЩ, ВРУ, шкафы АВР и щиты для ЦОД на своём производстве в Королёве. По рабочей документации или с подбором аналогов, когда нужные аппараты долго ждать.</p>
-    <a class="btn" href="#contacts">Рассчитать щит{{ARROW}}</a>
+    <a class="btn solid" href="#contacts">Рассчитать щит{{ARROW}}</a>
   </div>
     </div>
   </div>
-  <div class="vignette"></div>
-  <div class="hero-fade"></div>
   <div class="frame"></div>
 
   <div class="bar caps">
@@ -516,7 +516,7 @@ section.block{padding-block:150px 0;position:relative}
 
 <footer class="foot">
   <div class="wrap">
-    <img src="{{LOGO}}" alt="Ампераж Электро" width="92" height="40">
+    <img src="{{LOGO}}" alt="Ампераж Электро" width="93" height="40">
     <span>© 2026 Ампераж Электро, ИНН 5018222081</span>
     <a href="https://disk.yandex.ru/i/4FxlM1ogv6BoLA" target="_blank" rel="noopener">Политика конфиденциальности</a>
   </div>
