@@ -1,3 +1,7 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ампераж Электро</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Ампераж Электро — производство НКУ 0,4 кВ в Королёве: ГРЩ, ВРУ, шкафы АВР и щиты для ЦОД.">
@@ -69,7 +73,7 @@ h1,h2,h3{font-family:var(--fd);font-weight:200;margin:0;text-wrap:balance;letter
 .index a.on::before{width:32px;border-color:var(--orange)}
 
 /* hero */
-.hero{--cw:min(32vw,42svh,560px);position:relative;height:max(680px,min(100svh,1020px));overflow:hidden;isolation:isolate;background:var(--night)}
+.hero{--cw:min(32vw,42svh,560px);position:relative;height:clamp(560px,100vh,1020px);height:clamp(560px,100svh,1020px);overflow:hidden;isolation:isolate;background:var(--night)}
 /* слоистый параллакс: небо, дальние горы, ближние горы, заголовок, вода со шкафом — каждый слой едет со своей скоростью */
 .layers{position:absolute;inset:0;z-index:0}
 .layer{position:absolute;inset:0;will-change:transform}
@@ -98,7 +102,7 @@ h1,h2,h3{font-family:var(--fd);font-weight:200;margin:0;text-wrap:balance;letter
 .xhint{position:absolute;right:-10px;top:12%;transform:translateX(100%);color:var(--dim);white-space:nowrap;display:flex;align-items:center;gap:12px}
 .xhint::before{content:"";width:40px;border-top:1px solid var(--orange)}
 
-.hero-copy{position:absolute;left:0;right:0;margin-inline:auto;top:64%;width:min(720px,calc(100% - 40px));text-align:center;display:grid;justify-items:center;gap:24px;z-index:2}
+.hero-copy{position:absolute;left:0;right:0;margin-inline:auto;top:calc(59% + 26px);width:min(720px,calc(100% - 40px));text-align:center;display:grid;justify-items:center;gap:24px;z-index:2}
 .hero-copy p{margin:0;max-width:54ch;color:#f1f5fc;font-size:16.5px;font-weight:400;text-shadow:0 1px 3px rgba(4,8,20,.9),0 2px 18px rgba(4,8,20,.85)}
 
 .bar{position:absolute;left:0;right:0;bottom:0;height:60px;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;z-index:2;
@@ -322,7 +326,7 @@ section.block{padding-block:150px 0;position:relative}
   .gf-root{max-width:320px}
   .gf-root[data-open]{--gf-spread:18px;--gf-fan:3.5deg}
   .card{aspect-ratio:auto;min-height:220px}
-  .hero-copy{top:62%;gap:16px}
+  .hero-copy{top:calc(59% + 18px);gap:16px}
   .hero-copy p{font-size:15px}
   .bar{grid-template-columns:auto 1fr;gap:12px}
   .bar > :first-child{display:none}
@@ -333,6 +337,12 @@ section.block{padding-block:150px 0;position:relative}
   .ref{border-radius:0 36px 0 36px}
   .mapcard{min-height:320px;border-radius:0 64px 0 64px}
   .float .btn{padding:12px 16px}
+}
+/* невысокие экраны (ноутбуки, увеличенный масштаб): текст в две строки, кнопка всегда целиком над нижней панелью */
+@media (max-height:800px) and (min-width:561px){
+  .hero{--cw:min(32vw,38svh,560px)}
+  .hero-copy{gap:14px;top:calc(59% + 20px);width:min(860px,calc(100% - 40px))}
+  .hero-copy p{font-size:15px;line-height:1.55;max-width:72ch}
 }
 @media (prefers-reduced-motion:reduce){
   .track{animation:none;flex-wrap:wrap;width:auto;gap:14px 30px;padding-inline:20px}
