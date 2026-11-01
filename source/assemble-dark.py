@@ -38,7 +38,7 @@ m+='<text x="590" y="250" font-family="Jost,Manrope,sans-serif" font-size="14" f
 m+='<g transform="translate(548,214)"><circle r="46" fill="#f26a1b" opacity=".16"/><circle r="26" fill="#f26a1b" opacity=".22"/><path d="M0,0 C-16,-22 -20,-32 -20,-40 a20,20 0 1 1 40,0 c0,8 -4,18 -20,40z" fill="#f26a1b" stroke="#fff" stroke-width="3"/><circle cy="-40" r="7" fill="#fff"/></g>'
 m+='</svg>'
 t=open('template-dark.html').read()
-for k,v in {'{{L_CITY}}':uri('../assets/bg-city.webp','image/webp'),'{{LOGO}}':uri('../assets/logo-light.webp','image/webp'),'{{CAB_CLOSED}}':uri('../assets/cabinet-closed.webp','image/webp'),'{{CAB_OPEN}}':uri('../assets/cabinet-open.webp','image/webp'),'{{OBJECTS}}':one+two,'{{SPEC}}':SPEC,'{{TOTAL}}':str(TOTAL),'{{MAP}}':m,'{{GALLERY}}':GALLERY,'{{ARROW}}':ARROW}.items():
+for k,v in {'{{L_CITY}}':uri('../assets/bg-city.webp','image/webp'),'{{L_CITY_M}}':uri('../assets/bg-city-mobile.webp','image/webp'),'{{LOGO}}':uri('../assets/logo-light.webp','image/webp'),'{{CAB_CLOSED}}':uri('../assets/cabinet-closed.webp','image/webp'),'{{CAB_OPEN}}':uri('../assets/cabinet-open.webp','image/webp'),'{{OBJECTS}}':one+two,'{{SPEC}}':SPEC,'{{TOTAL}}':str(TOTAL),'{{MAP}}':m,'{{GALLERY}}':GALLERY,'{{ARROW}}':ARROW}.items():
   t=t.replace(k,v)
 assert '{{' not in t
 open('../amperazh-dark.html','w').write(t)

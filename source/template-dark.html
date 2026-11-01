@@ -67,6 +67,7 @@ h1,h2,h3{font-family:var(--fd);font-weight:200;margin:0;text-wrap:balance;letter
 /* слоистый параллакс: небо, дальние горы, ближние горы, заголовок, вода со шкафом — каждый слой едет со своей скоростью */
 .layers{position:absolute;inset:0;z-index:0}
 .layer{position:absolute;inset:0;will-change:transform}
+.layer > img.city-m{display:none}
 .layer > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 59%;display:block;pointer-events:none;user-select:none}
 .hero-title{position:absolute;top:auto;left:0;right:0;bottom:calc(41.5% + var(--cw) * .7064 + 3vh);text-align:center;padding-inline:20px;pointer-events:none}
 .hero-title h1{font-size:clamp(38px,5vw,80px);font-weight:200;line-height:1.04;letter-spacing:-.025em;text-shadow:0 2px 30px rgba(6,11,27,.55)}
@@ -302,7 +303,7 @@ section.block{padding-block:150px 0;position:relative}
   .card{aspect-ratio:1/.9}
   .sec-head,.ct-grid,.about{grid-template-columns:minmax(0,1fr);gap:40px}
   .sec-head{gap:16px}
-  .hero{--cw:min(88vw,46svh,520px)}
+  .hero{--cw:min(80vw,42svh,520px)}
   .xhint,.frame{display:none}
   section.block{padding-top:110px}
   .spec-row,.spec-total{grid-template-columns:minmax(0,1fr) 3rem}
@@ -310,6 +311,9 @@ section.block{padding-block:150px 0;position:relative}
   .spec-head > :last-child,.spec-total > :last-child{display:none}
 }
 @media (max-width:560px){
+  /* телефон: отдельный фон, где пустая середина вырезана и дома сдвинуты к центру (стык за шкафом) */
+  .layer > img.city-d{display:none}
+  .layer > img.city-m{display:block}
   .cards{grid-template-columns:minmax(0,1fr)}
   .gf-grid{grid-template-columns:minmax(0,1fr);gap:36px}
   .gf-root{max-width:320px}
@@ -359,7 +363,7 @@ section.block{padding-block:150px 0;position:relative}
 <main lang="ru">
 <section class="hero" id="hero">
   <div class="layers" data-parallax-layers>
-    <div class="layer" data-parallax-layer="0.5"><img src="{{L_CITY}}" alt="" width="1920" height="1071"></div>
+    <div class="layer" data-parallax-layer="0.5"><img class="city city-d" src="{{L_CITY}}" alt="" width="1920" height="1071"><img class="city city-m" src="{{L_CITY_M}}" alt="" width="1100" height="818"></div>
     <div class="vignette"></div>
     <div class="hero-fade"></div>
     <div class="layer hero-title" data-parallax-layer="0.32"><h1>Энергия под контролем</h1></div>
@@ -631,14 +635,14 @@ section.block{padding-block:150px 0;position:relative}
   box.addEventListener('pointerenter',function(e){if(e.pointerType==='touch')return;demo=false;var b=box.getBoundingClientRect();x=e.clientX-b.left;y=e.clientY-b.top;box.classList.add('on')});
   box.addEventListener('pointermove',function(e){if(e.pointerType==='touch')return;demo=false;var b=box.getBoundingClientRect();aim(e.clientX-b.left,e.clientY-b.top,R())});
   box.addEventListener('pointerleave',function(e){if(e.pointerType==='touch')return;box.classList.remove('on');tr=0;kick()});
-  var isTouch=false;
-  box.addEventListener('pointerdown',function(e){isTouch=(e.pointerType==='touch')});
-  box.addEventListener('click',function(e){
-    if(!isTouch)return; demo=false;
-    var b=box.getBoundingClientRect(), open=tr<1;
-    box.classList.toggle('on',open);
-    aim(e.clientX-b.left,e.clientY-b.top,open?Math.hypot(b.width,b.height):0);
-  });
+  /* телефон: касание — пятно рентгена там, где палец; провести пальцем вбок — пятно едет; касание мимо шкафа — гаснет */
+  var touchDown=false;
+  function RT(){return Math.max(90,box.clientWidth*0.28)}
+  function touchAt(e){var b=box.getBoundingClientRect();if(tr<1){x=e.clientX-b.left;y=e.clientY-b.top}box.classList.add('on');aim(e.clientX-b.left,e.clientY-b.top,RT())}
+  box.addEventListener('pointerdown',function(e){if(e.pointerType!=='touch')return;demo=false;touchDown=true;touchAt(e)});
+  box.addEventListener('pointermove',function(e){if(e.pointerType==='touch'&&touchDown)touchAt(e)});
+  ['pointerup','pointercancel'].forEach(function(t){box.addEventListener(t,function(e){if(e.pointerType==='touch')touchDown=false})});
+  document.addEventListener('pointerdown',function(e){if(e.pointerType==='touch'&&!box.contains(e.target)&&tr>0){box.classList.remove('on');tr=0;kick()}});
   if(!reduce){
     setTimeout(function(){
       demo=true; var w=box.clientWidth,h=box.clientHeight,t0=performance.now();
